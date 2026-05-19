@@ -78,62 +78,7 @@ http://localhost:3000/api/leituras/data/2026-04-04
 ``` 
 Cole abaixo o resultado retornado pela API: 
 ```json 
-require('dotenv').config();
-
-const express = require('express');
-const cors = require('cors');
-
-const ensureDatabaseExists = require('./config/ensureDatabase');
-const sequelize = require('./config/database');
-const seedLeiturasIfEmpty = require('./seeders/seedLeiturasIfEmpty');
-const leiturasRoutes = require('./routes/leiturasRoutes');
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.get('/', (req, res) => { 
- return res.json({ 
- mensagem: 'API Estação Meteorológica', 
- descricao: 'API para consulta de leituras meteorológicas armazenadas no PostgreSQL.',  rotasDisponiveis: { 
- listarTodasAsLeituras: 'GET /api/leituras', 
- pesquisarLeiturasPorData: 'GET /api/leituras/data/2026-04-01', 
- importarCsv: 'npm run import:csv' 
- },
- formatoDaData: 'YYYY-MM-DD', 
- exemploDeUso: 'http://localhost:3000/api/leituras/data/2026-04-01', 
- }); 
-}); 
-
-
-app.use('/api', leiturasRoutes);
-
-const PORT = process.env.PORT || 3000;
-
-async function startServer() {
-  try {
-    await ensureDatabaseExists();
-
-    await sequelize.authenticate();
-    console.log('Conexão com PostgreSQL realizada com sucesso.');
-
-    await sequelize.sync();
-    console.log('Tabela sincronizada com sucesso.');
-
-    await seedLeiturasIfEmpty();
-
-    app.listen(PORT, () => {
-      console.log(`Servidor rodando em http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error('Erro ao iniciar a aplicação:');
-    console.error(error.message);
-    process.exit(1);
-  }
-}
-
-startServer();
+{"dataPesquisada":"2026-04-04","total":3,"leituras":[{"id":9,"station_id":"EM-ARACATUBA-01","timestamp":"2026-04-04T11:00:00.000Z","temperature_c":23.4,"humidity_pct":76.2},{"id":10,"station_id":"EM-ARACATUBA-01","timestamp":"2026-04-04T12:00:00.000Z","temperature_c":25.2,"humidity_pct":72},{"id":11,"station_id":"EM-ARACATUBA-01","timestamp":"2026-04-04T13:00:00.000Z","temperature_c":25.9,"humidity_pct":70.5}]}
 
 cole aqui o resultado da API 
 ``` 
